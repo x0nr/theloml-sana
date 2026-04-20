@@ -326,20 +326,19 @@
 
     <!-- MOVED: Picture / song section ABOVE the message -->
     <div class="card song-section">
-        <div class="song-title">OUR CITY</div>  <!-- Changed from 서울 CITY -->
+        <div class="song-title">SEOUL CITY</div>  <!-- Changed from 서울 CITY -->
         <div class="artist-img">
             <img src="https://i.imgur.com/iSTbi7e.jpeg" alt="The Weeknd and Jennie">
         </div>
         <div class="lyrics">
-            "Seoul city, Seoul city —<br>
-            눈부신 이 밤이 지나가도<br>
-            너와 나, 우리 변하지 않게"
+            "잠을 자기 전과 깨어난 후에 제가 가장 <br>
+            좋아하는 생각은 바로 당신입니다"
         </div>
         <div style="font-size: 0.7rem; margin-top: 10px; opacity: 0.6;">♫ Seoul City — Jennie</div>
     </div>
 
     <!-- Long button to reveal the letter -->
-    <button class="reveal-btn" id="revealLetterBtn">📖 read my letter</button>
+    <button class="reveal-btn" id="revealLetterBtn">📖 Click me</button>
 
     <!-- Hidden letter card (initially hidden) -->
     <div class="card" id="letterCard" style="display: none;">
@@ -412,7 +411,7 @@
             if (letterCard.style.display === 'none') {
                 letterCard.style.display = 'block';
                 letterContent.classList.add('show');
-                revealBtn.textContent = '📖 letter opened 🖤';
+                revealBtn.textContent = '📖 Opened 🖤';
                 revealBtn.style.opacity = '0.7';
                 revealBtn.style.cursor = 'default';
                 revealBtn.disabled = true;
@@ -517,7 +516,7 @@
         });
         
         // Dynamic title
-        const titles = ["For The LOML", "Me & You Forever?", "US", "I Love you", "I'm Yours", "ILY"];
+        const titles = ["Me & You Forever?", "US", "I Love you", "ILY"];
         let idx = 0;
         setInterval(() => {
             document.title = `${titles[idx]} 🖤`;
