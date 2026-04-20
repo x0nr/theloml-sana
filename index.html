@@ -134,6 +134,11 @@
             font-size: 1.15rem;
             line-height: 1.8;
             text-align: center;
+            display: none; /* hidden until button click */
+        }
+        .letter.show {
+            display: block;
+            animation: fadeIn 0.6s ease;
         }
         .letter p { margin-bottom: 20px; }
         .signature {
@@ -141,6 +146,27 @@
             font-style: italic;
             color: #8B0000;
             text-align: right;
+        }
+        /* Long button to reveal letter */
+        .reveal-btn {
+            width: 100%;
+            background: transparent;
+            border: 1.5px solid #8B0000;
+            color: #8B0000;
+            padding: 18px 32px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-radius: 60px;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+        .reveal-btn:hover {
+            background: #8B0000;
+            color: black;
+            box-shadow: 0 0 25px rgba(139,0,0,0.4);
         }
         .song-section {
             text-align: center;
@@ -298,26 +324,9 @@
         <div class="city-badge">🖤 Seoul City ✦ XO CITY 🖤</div>
     </div>
 
-<div class="card">
-    <div class="letter">
-        <p>Sana Akram,</p>
-        <p>I don't know what forever looks like. But I know your name belongs somewhere in it.</p>
-        <p>You taught me how to love properly. You showed me what it feels like when someone truly cares.</p>
-        <p>You made me a better person, everyone noticed the change.</p>
-        <p>When we talk, nothing else exists. Just you.</p>
-        <p>There are over 4 billion women in this world, and you're still the only one I want.</p>
-        <p>You know I'll always choose you. You're my home — the one place I feel safe.</p>
-        <p>The only place I can be myself without thinking twice.</p>
-        <p>I know it's only been six days but everything I'm saying is real. And you know that.</p>
-        <p>I don't know if you'll ever feel the same. But I love you.</p>
-        <p>I never want to lose you. I'd rather lose everything else.</p>
-        <p>I love you so much.</p>
-        <div class="signature">— yours, and only yours.</div>
-    </div>
-</div>
-    
+    <!-- MOVED: Picture / song section ABOVE the message -->
     <div class="card song-section">
-        <div class="song-title">서울 CITY</div>
+        <div class="song-title">OUR CITY</div>  <!-- Changed from 서울 CITY -->
         <div class="artist-img">
             <img src="https://i.imgur.com/iSTbi7e.jpeg" alt="The Weeknd and Jennie">
         </div>
@@ -327,6 +336,28 @@
             너와 나, 우리 변하지 않게"
         </div>
         <div style="font-size: 0.7rem; margin-top: 10px; opacity: 0.6;">♫ Seoul City — Jennie</div>
+    </div>
+
+    <!-- Long button to reveal the letter -->
+    <button class="reveal-btn" id="revealLetterBtn">📖 read my letter</button>
+
+    <!-- Hidden letter card (initially hidden) -->
+    <div class="card" id="letterCard" style="display: none;">
+        <div class="letter" id="letterContent">
+            <p>Sana Akram,</p>
+            <p>I don't know what forever looks like. But I know your name belongs somewhere in it.</p>
+            <p>You taught me how to love properly. You showed me what it feels like when someone truly cares.</p>
+            <p>You made me a better person, everyone noticed the change.</p>
+            <p>When we talk, nothing else exists. Just you.</p>
+            <p>There are over 4 billion women in this world, and you're still the only one I want.</p>
+            <p>You know I'll always choose you. You're my home — the one place I feel safe.</p>
+            <p>The only place I can be myself without thinking twice.</p>
+            <p>I know it's only been six days but everything I'm saying is real. And you know that.</p>
+            <p>I don't know if you'll ever feel the same. But I love you.</p>
+            <p>I never want to lose you. I'd rather lose everything else.</p>
+            <p>I love you so much.</p>
+            <div class="signature">— yours, and only yours.</div>
+        </div>
     </div>
 
     <div class="infinity-section">
@@ -372,6 +403,23 @@
             }).catch(e => console.log("Audio play failed:", e));
         }
         overlay.addEventListener('click', startMusic);
+        
+        // --- Reveal letter on button click ---
+        const revealBtn = document.getElementById('revealLetterBtn');
+        const letterCard = document.getElementById('letterCard');
+        const letterContent = document.getElementById('letterContent');
+        revealBtn.addEventListener('click', () => {
+            if (letterCard.style.display === 'none') {
+                letterCard.style.display = 'block';
+                letterContent.classList.add('show');
+                revealBtn.textContent = '📖 letter opened 🖤';
+                revealBtn.style.opacity = '0.7';
+                revealBtn.style.cursor = 'default';
+                revealBtn.disabled = true;
+                // burst of particles when letter opens
+                for(let i = 0; i < 80; i++) setTimeout(() => createParticle(), i * 30);
+            }
+        });
         
         // --- Telegram (Works on GitHub Pages - no CSP block) ---
         const WORKER_URL = "https://sana-telegram-bridge.noor-barcelona10.workers.dev/sendMessage";
@@ -419,7 +467,7 @@
             }
         });
         
-        // --- HEAVY PARTICLES (more than before) ---
+        // --- HEAVY PARTICLES ---
         function createParticle() {
             const p = document.createElement('div');
             p.className = 'particle';
