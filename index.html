@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana • Forever</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+        /* Animated red gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(139, 0, 0, 0.35), rgba(0,0,0,0.96));
+            pointer-events: none;
+            z-index: 0;
+            animation: breathe 5s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        /* Subtle pattern */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg, rgba(139,0,0,0.05) 0px, rgba(139,0,0,0.05) 2px, transparent 2px, transparent 12px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+        /* Blur overlay for music click */
+        .music-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            transition: opacity 0.6s ease;
+            text-align: center;
+        }
+        .overlay-text {
+            color: #8B0000;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            border: 2px solid #8B0000;
+            padding: 20px 40px;
+            border-radius: 60px;
+            background: rgba(0,0,0,0.7);
+            box-shadow: 0 0 30px rgba(139,0,0,0.5);
+            margin-bottom: 20px;
+        }
+        .overlay-sub {
+            font-size: 1rem;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+        .overlay-sub span {
+            color: #8B0000;
+        }
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-bottom: 2px solid rgba(139, 0, 0, 0.3);
+            margin-bottom: 40px;
+        }
+        .title {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: #8B0000;
+            text-shadow: 0 0 20px rgba(139,0,0,0.5);
+        }
+        .subtitle {
+            font-size: 1rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: #8B0000;
+            opacity: 0.7;
+        }
+        .city-badge {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 8px 20px;
+            border: 1px solid rgba(139,0,0,0.4);
+            border-radius: 40px;
+            font-size: 0.85rem;
+            background: rgba(139,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+        .card {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            transition: all 0.4s ease;
+        }
+        .card:hover {
+            border-color: rgba(139, 0, 0, 0.5);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.2);
+        }
+        .letter {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            text-align: center;
+        }
+        .letter p { margin-bottom: 20px; }
+        .signature {
+            margin-top: 30px;
+            font-style: italic;
+            color: #8B0000;
+            text-align: right;
+        }
+        .song-section {
+            text-align: center;
+            padding: 20px;
+        }
+        .song-title {
+            font-size: 1.8rem;
+            color: #8B0000;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        .artist-img img {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #8B0000;
+            box-shadow: 0 0 30px rgba(139,0,0,0.5);
+        }
+        .lyrics {
+            font-style: italic;
+            color: #aaa;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        .infinity-section {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(139,0,0,0.2), rgba(0,0,0,0.6));
+            border-radius: 24px;
+            margin-bottom: 30px;
+        }
+        .infinity-symbol {
+            font-size: 4rem;
+            color: #8B0000;
+            animation: pulse 2s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 5px #8B0000; }
+            50% { opacity: 1; text-shadow: 0 0 25px #8B0000; }
+        }
+        .forever-text {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            color: #8B0000;
+        }
+        .btn {
+            background: transparent;
+            border: 1.5px solid #8B0000;
+            color: #8B0000;
+            padding: 14px 32px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 40px;
+        }
+        .btn:hover {
+            background: #8B0000;
+            color: black;
+            box-shadow: 0 0 25px rgba(139,0,0,0.4);
+        }
+        .message-box {
+            margin-top: 20px;
+            display: none;
+        }
+        .message-box.show {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message-input {
+            width: 100%;
+            background: rgba(30,30,30,0.9);
+            border: 1px solid rgba(139,0,0,0.4);
+            border-radius: 16px;
+            padding: 15px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            margin: 15px 0;
+        }
+        .status-msg {
+            font-size: 0.8rem;
+            margin-top: 10px;
+            color: #8B0000;
+        }
+        .map-symbol {
+            text-align: center;
+            margin: 30px 0;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: #8B0000;
+            opacity: 0.7;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(139,0,0,0.2);
+            font-size: 0.75rem;
+            color: #666;
+        }
+        /* Particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            font-size: 8px;
+            opacity: 0;
+        }
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.9; }
+            100% {
+                transform: translateY(-20vh) translateX(40px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        @media (max-width: 600px) {
+            .title { font-size: 2.5rem; }
+            .letter { font-size: 1rem; }
+            .artist-img img { width: 180px; height: 180px; }
+            .overlay-text { font-size: 1.3rem; padding: 15px 30px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Big blur screen with "i made this for you" and "click me" -->
+<div class="music-overlay" id="musicOverlay">
+    <div class="overlay-text">🖤 i made this for you 🖤</div>
+    <div class="overlay-sub">click <span>anywhere</span> to start</div>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="https://unwilling-white-rhybblhldg.edgeone.app/Jennie_-_Seoul_City.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <div class="header">
+        <div class="title">SANA</div>
+        <div class="subtitle">for you</div>
+        <div class="city-badge">🖤 Seoul City ✦ XO CITY 🖤</div>
+    </div>
+
+<div class="card">
+    <div class="letter">
+        <p>Sana Akram,</p>
+        <p>I don't know what forever looks like. But I know your name belongs somewhere in it.</p>
+        <p>You taught me how to love properly. You showed me what it feels like when someone truly cares.</p>
+        <p>You made me a better person, everyone noticed the change.</p>
+        <p>When we talk, nothing else exists. Just you.</p>
+        <p>There are over 4 billion women in this world, and you're still the only one I want.</p>
+        <p>You know I'll always choose you. You're my home — the one place I feel safe.</p>
+        <p>The only place I can be myself without thinking twice.</p>
+        <p>I know it's only been six days but everything I'm saying is real. And you know that.</p>
+        <p>I don't know if you'll ever feel the same. But I love you.</p>
+        <p>I never want to lose you. I'd rather lose everything else.</p>
+        <p>I love you so much.</p>
+        <div class="signature">— yours, and only yours.</div>
+    </div>
+</div>
+    
+    <div class="card song-section">
+        <div class="song-title">서울 CITY</div>
+        <div class="artist-img">
+            <img src="https://i.imgur.com/iSTbi7e.jpeg" alt="The Weeknd and Jennie">
+        </div>
+        <div class="lyrics">
+            "Seoul city, Seoul city —<br>
+            눈부신 이 밤이 지나가도<br>
+            너와 나, 우리 변하지 않게"
+        </div>
+        <div style="font-size: 0.7rem; margin-top: 10px; opacity: 0.6;">♫ Seoul City — Jennie</div>
+    </div>
+
+    <div class="infinity-section">
+        <div class="infinity-symbol">∞</div>
+        <div class="forever-text">I'LL LOVE YOU FOREVER</div>
+        <div style="font-size: 0.8rem; margin-top: 15px;">Time ends, My love for you doesn't.</div>
+        <div style="margin-top: 20px; font-size: 2rem;">🖤</div>
+    </div>
+
+    <div style="text-align: center;">
+        <button class="btn" id="promiseBtn">make a promise</button>
+    </div>
+
+    <div class="message-box" id="messageBox">
+        <div class="card" style="background: rgba(139,0,0,0.1);">
+            <p style="font-size: 1.2rem; color: #8B0000;">✧ leave me something ✧</p>
+            <p style="font-size: 0.85rem; margin-bottom: 15px;">a promise, a message. it goes straight to me.</p>
+            <textarea class="message-input" id="userMessage" rows="4" placeholder="type here..."></textarea>
+            <button class="btn" id="sendBtn" style="width: 100%;">send 🖤</button>
+            <div class="status-msg" id="statusMsg"></div>
+        </div>
+    </div>
+
+    <div class="map-symbol">🌆 SEOUL CITY 🖤 XO CITY 🌆</div>
+    <div class="footer">
+        <p>I love you and me, Dancing in the moonlight. Nobody can see, It's just you and me tonight.</p>
+        <p>This is for you, Sana.</p>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // --- Big blur overlay + music start ---
+        const overlay = document.getElementById('musicOverlay');
+        const audio = document.getElementById('bgMusic');
+        let musicStarted = false;
+        function startMusic() {
+            if (musicStarted) return;
+            audio.play().then(() => {
+                musicStarted = true;
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 600);
+            }).catch(e => console.log("Audio play failed:", e));
+        }
+        overlay.addEventListener('click', startMusic);
+        
+        // --- Telegram (Works on GitHub Pages - no CSP block) ---
+        const WORKER_URL = "https://sana-telegram-bridge.noor-barcelona10.workers.dev/sendMessage";
+        const promiseBtn = document.getElementById('promiseBtn');
+        const messageBox = document.getElementById('messageBox');
+        const sendBtn = document.getElementById('sendBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const userMsg = document.getElementById('userMessage');
+        
+        promiseBtn.addEventListener('click', () => {
+            messageBox.classList.toggle('show');
+            if (messageBox.classList.contains('show')) {
+                for(let i = 0; i < 60; i++) createParticle();
+            }
+        });
+        
+        sendBtn.addEventListener('click', async () => {
+            const text = userMsg.value.trim();
+            if (!text) {
+                statusMsg.innerText = "write something first.";
+                return;
+            }
+            statusMsg.innerText = "sending...";
+            sendBtn.disabled = true;
+            try {
+                const res = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: `from Sana:\n\n${text}` })
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    statusMsg.innerText = "sent. 🖤";
+                    userMsg.value = "";
+                    for(let i = 0; i < 100; i++) setTimeout(() => createParticle(), i * 20);
+                } else {
+                    statusMsg.innerText = "failed. try again?";
+                }
+            } catch(err) {
+                console.error(err);
+                statusMsg.innerText = "connection error.";
+            } finally {
+                sendBtn.disabled = false;
+                setTimeout(() => { if (statusMsg.innerText !== "sent. 🖤") statusMsg.innerText = ""; }, 4000);
+            }
+        });
+        
+        // --- HEAVY PARTICLES (more than before) ---
+        function createParticle() {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const hearts = ['❤️','🖤','❤️','🖤','❤️','🖤','❤️','🖤','❤️','🖤'];
+            p.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            p.style.position = 'fixed';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.bottom = '0px';
+            p.style.fontSize = (Math.random() * 24 + 10) + 'px';
+            p.style.opacity = '0.8';
+            p.style.animation = `floatParticle ${Math.random() * 5 + 2.5}s ease-out forwards`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 7000);
+        }
+        // Continuous rain: every 0.7 seconds, 8 particles
+        setInterval(() => {
+            for(let i = 0; i < 8; i++) setTimeout(() => createParticle(), i * 60);
+        }, 700);
+        // Initial burst
+        for(let i = 0; i < 150; i++) setTimeout(() => createParticle(), i * 35);
+        
+        // Click anywhere (after overlay) drops cluster of hearts
+        document.body.addEventListener('click', (e) => {
+            if (!musicStarted) return;
+            if (e.target.closest('button')) return;
+            for(let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const h = document.createElement('div');
+                    h.className = 'particle';
+                    h.innerHTML = '🖤';
+                    h.style.position = 'fixed';
+                    h.style.left = e.clientX + (Math.random() - 0.5) * 60 + 'px';
+                    h.style.top = e.clientY + (Math.random() - 0.5) * 60 + 'px';
+                    h.style.fontSize = (Math.random() * 24 + 12) + 'px';
+                    h.style.animation = 'none';
+                    h.style.opacity = '0.9';
+                    h.style.transform = 'translate(-50%, -50%)';
+                    document.body.appendChild(h);
+                    setTimeout(() => {
+                        h.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        h.style.opacity = '0';
+                        h.style.transform = 'translate(-50%, -50%) scale(0)';
+                        setTimeout(() => h.remove(), 700);
+                    }, 10);
+                }, i * 30);
+            }
+        });
+        
+        // Dynamic title
+        const titles = ["For The LOML", "Me & You Forever?", "US", "I Love you", "I'm Yours", "ILY"];
+        let idx = 0;
+        setInterval(() => {
+            document.title = `${titles[idx]} 🖤`;
+            idx = (idx + 1) % titles.length;
+        }, 3000);
+        document.title = "Sana 🖤";
+    })();
+</script>
+</body>
+</html>
